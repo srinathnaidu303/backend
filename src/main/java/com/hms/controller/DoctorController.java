@@ -45,4 +45,9 @@ public class DoctorController {
         doctorService.deleteDoctor(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}/availability")
+    public ResponseEntity<DoctorDto> updateAvailability(@PathVariable Long id, @RequestParam boolean available) {
+        return ResponseEntity.ok(doctorService.updateAvailability(id, available));
+    }
 }

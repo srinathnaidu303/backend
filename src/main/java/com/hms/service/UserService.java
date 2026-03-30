@@ -13,9 +13,11 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final DoctorRepository doctorRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, DoctorRepository doctorRepository) {
         this.userRepository = userRepository;
+        this.doctorRepository = doctorRepository;
     }
 
     public AuthResponse register(RegisterRequest request) {
@@ -32,7 +34,7 @@ public class UserService {
         User savedUser = userRepository.save(user);
 
         return new AuthResponse(savedUser.getId(), savedUser.getName(), savedUser.getEmail(), savedUser.getRole(),
-                "Registration successful");
+                null, "Registration successful");
     }
 
     public AuthResponse login(LoginRequest request) {
@@ -43,6 +45,14 @@ public class UserService {
             throw new RuntimeException("Invalid email or password");
         }
 
-        return new AuthResponse(user.getId(), user.getName(), user.getEmail(), user.getRole(), "Login successful");
+        Long doctorId = null;
+        if (user.getRole() == Role.DOCTOR) {
+            doctorId = doctorRepository.findByUserId(user.getId())
+                    .map(d -> d.getId())
+                    .orElse(null);
+        }
+
+        return new AuthResponse(user.getId(), user.getName(), user.getEmail(), user.getRole(),
+                doctorId, "Login successful");
     }
 }

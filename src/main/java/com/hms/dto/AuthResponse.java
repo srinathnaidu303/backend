@@ -7,16 +7,18 @@ public class AuthResponse {
     private String name;
     private String email;
     private Role role;
+    private Long doctorId;
     private String message;
 
     public AuthResponse() {
     }
 
-    public AuthResponse(Long id, String name, String email, Role role, String message) {
+    public AuthResponse(Long id, String name, String email, Role role, Long doctorId, String message) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.role = role;
+        this.doctorId = doctorId;
         this.message = message;
     }
 
@@ -50,6 +52,14 @@ public class AuthResponse {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Long getDoctorId() {
+        return doctorId;
+    }
+
+    public void setDoctorId(Long doctorId) {
+        this.doctorId = doctorId;
     }
 
     public String getMessage() {

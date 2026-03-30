@@ -58,6 +58,14 @@ public class DoctorService {
         return mapToDto(saved);
     }
 
+    public DoctorDto updateAvailability(Long id, boolean available) {
+        Doctor doctor = doctorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Doctor not found"));
+        doctor.setAvailable(available);
+        Doctor saved = doctorRepository.save(doctor);
+        return mapToDto(saved);
+    }
+
     public void deleteDoctor(Long id) {
         if (!doctorRepository.existsById(id)) {
             throw new ResourceNotFoundException("Doctor not found");

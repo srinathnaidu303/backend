@@ -21,6 +21,10 @@ public class Doctor {
     @Column(nullable = false)
     private boolean available = true;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     private List<Appointment> appointments;
 
@@ -64,6 +68,14 @@ public class Doctor {
 
     public void setAvailable(boolean available) {
         this.available = available;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public List<Appointment> getAppointments() {
