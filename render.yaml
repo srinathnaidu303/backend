@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: hms-backend
+    runtime: docker
+    plan: free
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: hms-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: hms-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: hms-db
+          property: password
+    autoDeploy: true
+
+databases:
+  - name: hms-db
+    plan: free
+    databaseName: hospital_db
+    user: hms_user
