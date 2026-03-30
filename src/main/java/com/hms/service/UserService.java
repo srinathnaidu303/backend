@@ -7,6 +7,7 @@ import com.hms.entity.Role;
 import com.hms.entity.User;
 import com.hms.exception.ResourceNotFoundException;
 import com.hms.repository.UserRepository;
+import com.hms.repository.DoctorRepository;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,9 +1,12 @@
 package com.hms.config;
 
 import com.hms.entity.Doctor;
+import com.hms.entity.Role;
 import com.hms.entity.Specialty;
+import com.hms.entity.User;
 import com.hms.repository.DoctorRepository;
 import com.hms.repository.SpecialtyRepository;
+import com.hms.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
