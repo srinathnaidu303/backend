@@ -44,16 +44,17 @@ public class DataSeeder implements CommandLineRunner {
         Map<String, Specialty> specialtyMap = new HashMap<>();
         specialtyRepository.findAll().forEach(s -> specialtyMap.put(s.getName(), s));
 
-        // Step 2: Seed Doctors and Users
-        if (doctorRepository.count() == 0) {
-            // Create a test doctor user
-            User docUser = new User("John Smith", "doctor@hms.com", "password123", Role.DOCTOR);
-            if (!userRepository.existsByEmail(docUser.getEmail())) {
-                userRepository.save(docUser);
-            } else {
-                docUser = userRepository.findByEmail(docUser.getEmail()).get();
-            }
+        // Step 2: Seed Test Doctor User (Always ensure it exists)
+        User docUser;
+        if (!userRepository.existsByEmail("doctor@hms.com")) {
+            docUser = new User("John Smith", "doctor@hms.com", "password123", Role.DOCTOR);
+            docUser = userRepository.save(docUser);
+        } else {
+            docUser = userRepository.findByEmail("doctor@hms.com").get();
+        }
 
+        // Step 3: Seed Doctors
+        if (doctorRepository.count() == 0) {
             Doctor d1 = new Doctor("John Smith", specialtyMap.get("Cardiology"), true);
             d1.setUser(docUser);
 
@@ -64,6 +65,14 @@ public class DataSeeder implements CommandLineRunner {
                     new Doctor("Sarah Davis", specialtyMap.get("Dermatology"), true),
                     new Doctor("David Wilson", specialtyMap.get("Pediatrics"), true)
             ));
+        } else {
+            // Ensure at least one doctor is linked to the test user for testing
+            List<Doctor> allDocs = doctorRepository.findAll();
+            if (allDocs.stream().noneMatch(d -> d.getUser() != null && d.getUser().getEmail().equals("doctor@hms.com"))) {
+                Doctor d = allDocs.get(0);
+                d.setUser(docUser);
+                doctorRepository.save(d);
+            }
         }
     }
 }
